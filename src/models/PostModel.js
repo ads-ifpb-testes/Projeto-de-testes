@@ -19,7 +19,10 @@ class Post {
   }
 
   async create() {
-    this.post = await PostModel.create(this.body);
+    console.log(this.post);
+    this.post = await PostModel.create(this.body)
+    console.log(this.post);
+    return this.post;
   }
 
   static async readAll() {

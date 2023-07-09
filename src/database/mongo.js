@@ -5,6 +5,11 @@ const mongoose = require('mongoose');
 async function connect() {
   return await mongoose.connect(process.env.CONNECTION_STRING, { writeConcern: { wtimeout: 30000 } });
 }
+
+async function close() {
+  return await mongoose.disconnect();
+}
+
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
@@ -23,6 +28,7 @@ const sessionOptions = session({
 
 module.exports = {
   connect,
+  close,
   flash,
   sessionOptions,
 };
