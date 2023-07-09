@@ -1,0 +1,43 @@
+<%- include('includes/head') %>
+<title><%= pfUser.username %> - Perfil</title>
+</head>
+
+<body>
+  <%- include('includes/nav') %>
+  <%- include('includes/edit-profile') %>
+  <%- include('includes/create-post') %>
+  <div class="container">
+    <section class="mini-profile aside"></section>
+    <section class="content">
+      <div class="user-profile">
+        <div class="profile-picture">
+          <img src="<%= pfUser.pfPicture %>" alt="" class="mp-pf-picture">
+        </div>
+        <div class="user-data">
+          <p class="username"><%= pfUser.username %></p>
+          <p class="score user-score"><%= pfUser.score %> pontos</p>
+          <p class="user-email"><%= pfUser.email %></p>
+          <div class="pf-actions">
+            <% if (user && user._id === pfUser._id) {%>
+            <button class="btn edit-profile-btn">Editar perfil</button>
+            <form action="/user/delete/<%= user._id %>" method="post" class="delete-profile-form">
+              <button type="submit" class="btn danger-btn delete-profile">Deletar conta</button>
+            </form>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="content-content">
+        <% if(user && user._id === pfUser._id) { %>
+        <div class="create-post">
+          <button class="btn create-post-btn">Criar postagem</button>
+        </div>
+        <% } %>
+        <%- include('includes/posts') %>
+      </div>
+    </section>
+    <section class="people aside">
+      <%- include('includes/people') %>
+    </section>
+  </div>
+  <%- include('includes/footer') %>

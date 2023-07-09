@@ -1,0 +1,28 @@
+<%- include('includes/head') %>
+<title>Login</title>
+</head>
+
+<body>
+
+  <div class="container">
+    <section class="content">
+      <div class="content-content">
+        <div class="form-title">
+          <h1>Entrar na conta</h1>
+          <p>Entre na sua conta</p>
+        </div>
+        <%- include('includes/messages') %>
+        <form action="/user/login" method="post" class="form-login form">
+          <label for="email">Email</label>
+          <input type="text" name="email" class="field" id="email" autofocus>
+
+          <label for="password">Senha</label>
+          <input type="password" name="password" class="field" id="password">
+
+          <button type="submit" class="btn submit-btn">Entrar</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <%- include('includes/footer') %>

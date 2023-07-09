@@ -1,0 +1,27 @@
+<%- include('includes/head') %>
+<title>Fórum</title>
+</head>
+
+<body>
+  <%- include('includes/nav') %>
+  <%- include('includes/create-post') %>
+  <div class="container">
+    <section class="mini-profile aside">
+      <%- include('includes/mini-profile') %>
+    </section>
+    <section class="content">
+      <div class="content-content">
+        <%- include('includes/messages') %>
+        <% if(user) { %>
+        <div class="create-post">
+          <button class="btn create-post-btn">Criar postagem</button>
+        </div>
+        <% } %>
+        <%- include('includes/posts') %>
+      </div>
+    </section>
+    <section class="people aside">
+      <%- include('includes/people') %>
+    </section>
+  </div>
+  <%- include('includes/footer') %>

@@ -1,0 +1,16 @@
+<% if (user) { %>
+<div class="create-post-modal modal-bg hidden">
+  <div class="cpm-display modal">
+    <button class="btn close-modal" type="button">
+      <ion-icon name="close-circle-outline"></ion-icon>
+      <div class="close-modal-over"></div>
+    </button>
+    <form method="post" action="/post/create" class="create-post form">
+      <input type="hidden" name="user" id="user" value="<%= user._id %>">
+      <input type="text" name="title" id="post-title" class="field" placeholder="Título">
+      <textarea name="content" id="post-content" class="field" cols="30" rows="10"></textarea>
+      <button type="submit" class="btn submit-btn">Criar postagem</button>
+    </form>
+  </div>
+</div>
+<% } %>

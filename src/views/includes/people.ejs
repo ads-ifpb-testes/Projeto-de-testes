@@ -1,0 +1,16 @@
+<div>
+  <form action="/people" method="post">
+    <input type="text" class="search-bar" id="people-search" placeholder="Encontrar pessoas">
+  </form>
+  <div class="people-result">
+    <% users.forEach(user => { %>
+    <div class="pr-result">
+      <img src="<%= user.pfPicture %>" alt="" class="pr-pf-picture">
+      <div class="pr-data">
+        <a href="/profile/<%= user._id %>" class="pr-username"><%= user.username %></a>
+        <p class="pr-user-score score"><%= user.score %> pontos</p>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>

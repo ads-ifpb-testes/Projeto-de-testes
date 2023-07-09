@@ -1,0 +1,13 @@
+<% if (user) { %>
+<div>
+  <img src="<%= user.pfPicture %>" alt="" class="mp-pf-picture">
+  <div class="mp-user-data">
+    <p class="mp-username"><%= user.username %></p>
+    <small class="mp-user-score score"><%= user.score %> pontos</small>
+  </div>
+  <div class="mp-actions">
+    <a href="/profile/<%= user._id %>">Perfil</a>
+    <a href="/login/logout">Sair</a>
+  </div>
+</div>
+<% } %>

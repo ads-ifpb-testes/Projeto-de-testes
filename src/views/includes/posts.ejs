@@ -1,0 +1,73 @@
+<div class="posts">
+  <% posts.forEach(post => { %>
+  <div class="post">
+    <div class="post-main">
+      <img src="<%= post.user.pfPicture %>" alt="" class="post-pfp">
+      <div class="post-body">
+        <div class="post-title">
+          <a href="/profile/<%= post.user._id %>" class="post-user"><%= post.user.username %></a>
+          <% let postDate = new String(post.date).slice(0, 10).split('-') %>
+          <% let postHour = new Date(post.date).getHours() %>
+          <% let postMin = new Date(post.date).getMinutes() %>
+          <p class="date post-date">
+            <%= postDate[2] %>/<%= postDate[1] %>/<%= postDate[0] %> às
+            <%if(postHour<10){%>0<%}%><%= postHour %>:<%if(postMin<10){%>0<%}%><%= postMin %>
+          </p>
+          <% if (user && pfUser && user._id === pfUser._id) { %>
+          <form action="/post/delete/<%= post._id %>" method="post" class="delete-post-form">
+            <button type="submit" class="btn danger-btn delete-post" title="Deletar postagem">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+            <div class="del-post-over"></div>
+          </form>
+          <% } %>
+        </div>
+        <div class="post-content field">
+          <p class="content-title"><%= post.title %></p>
+          <p class="content-text"><%- post.content %></p>
+        </div>
+        <div class="actions"></div>
+      </div>
+    </div>
+    <div>
+      <button class="btn show-comments">Mostrar comentários</button>
+      <div class="comments hidden">
+        <% if (post.comments) { %>
+        <% post.comments.forEach(com => { %>
+        <div class="comment">
+          <img src="<%= com.user.pfPicture %>" alt="" class="comment-pfp">
+          <div class="comment-body">
+            <div class="comment-title">
+              <a href="/profile/<%= com.user._id %>" class="comment-user"><%= com.user.username %></a>
+              <% let comDate = new String(com.date).slice(0, 10).split('-') %>
+              <% let comHour = new Date(com.date).getHours() %>
+              <% let comMin = new Date(com.date).getMinutes() %>
+              <p class="date comment-date">
+                <%= comDate[2] %>/<%= comDate[1] %>/<%= comDate[0] %> às
+                <%if(comHour<10){%>0<%}%><%= comHour %>:<%if(comMin<10){%>0<%}%><%= comMin %>
+              </p>
+            </div>
+            <div class="comment-content field">
+              <p><%- com.content %></p>
+            </div>
+            <div class="actions"></div>
+          </div>
+        </div>
+        <% }) %>
+        <% } %>
+        <% if (user) { %>
+        <div class="create-comment">
+          <img src="<%= user.pfPicture %>" alt="" class="comment-pfp">
+          <form method="post" action="/comment/create" class="create-comment-form form">
+            <input type="hidden" name="user" id="user" value="<%= user._id %>">
+            <input type="hidden" name="post" id="post" value="<%= post._id %>">
+            <textarea name="content" id="comment-content" class="field" cols="30" rows="2" placeholder="Escrever comentário"></textarea>
+            <button type="submit" class="btn submit-btn comment-submit">Enviar</button>
+          </form>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>

@@ -1,0 +1,100 @@
+.create-post-btn {
+  font-size: 2rem;
+  font-weight: bold;
+  padding: .5em 1em;
+}
+
+.post {
+  background-color: var(--MainColor2);
+  border-radius: 1em;
+  margin-top: 1em;
+  padding: 1em;
+}
+
+.post-main {
+  display: flex;
+}
+
+.post img {
+  background-color: var(--Background);
+  border-radius: 1em;
+  width: 3em;
+  height: 3em;
+}
+
+.post-body,
+.comment-body {
+  width: calc(100% - 4em);
+  margin-left: 1em;
+}
+
+.post-title,
+.comment-title {
+  display: flex;
+  gap: .6em;
+  margin-bottom: .5em;
+}
+
+.post-user,
+.comment-user {
+  color: var(--OutterText);
+  text-decoration: none;
+}
+
+.delete-post {
+  font-size: 2rem;
+  margin-top: -0.1em;
+  padding: .2em .2em 0;
+}
+
+.post-content,
+.comment-content {
+  font-family: 'IBM Plex Mono', monospace;
+  overflow-wrap: break-word;
+}
+
+.content-title {
+  font-weight: bold;
+  margin-bottom: .5em;
+}
+
+.content-text {
+  white-space: pre-wrap;
+  width: 100%;
+}
+
+.post-date,
+.comment-date {
+  padding-top: .3em;
+}
+
+.show-comments {
+  font-size: 1.5rem;
+  margin: 1em 0 0 5.5em;
+}
+
+.comments {
+  margin-left: 4em;
+}
+
+.comment {
+  display: flex;
+  margin-top: 1em;
+}
+
+.create-comment {
+  display: flex;
+  gap: 1em;
+  margin-top: 1em;
+}
+
+.create-comment-form {
+  width: 100%;
+  gap: .5em;
+}
+
+.comment-submit {
+  font-size: 1.5rem;
+  max-width: fit-content;
+  margin: 0;
+}

@@ -1,0 +1,29 @@
+.form-title {
+  text-align: center;
+  margin: 1em 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form .field {
+  font-size: 2rem;
+  min-height: 3em;
+  padding: .25em .5em;
+}
+
+.form label {
+  margin-top: 1em;
+}
+
+textarea {
+  resize: none;
+}
+
+.submit-btn {
+  font-size: 2rem;
+  width: fit-content;
+  margin: 1em auto 0;
+}

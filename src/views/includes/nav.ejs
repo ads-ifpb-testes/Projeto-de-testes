@@ -1,0 +1,16 @@
+<nav class="nav">
+  <div class="nav-title">
+    <a href="/" class="home">Fórum</a>
+  </div>
+  <div class="nav-search">
+    <form action="/" method="post">
+      <input type="text" class="nav-search-bar search-bar" name="text" placeholder="Pesquisar no Fórum">
+    </form>
+  </div>
+  <div class="nav-links">
+    <% if (!user) { %>
+    <a href="/login">Entrar</a>
+    <a href="/signin">Criar conta</a>
+    <% } %>
+  </div>
+</nav>

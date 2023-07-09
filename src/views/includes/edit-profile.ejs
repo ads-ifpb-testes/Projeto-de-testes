@@ -1,0 +1,15 @@
+<% if (user) { %>
+<div class="edit-profile modal-bg hidden">
+  <div class="ep-display modal">
+    <form action="/user/update/<%= user._id %>" method="post" class="profile-form form" enctype="multipart/form-data">
+      <div class="edit-pf-picture">
+        <img src="<%= user.pfPicture %>" alt="">
+        <input type="file" name="pf-picture" id="choose-pfp">
+      </div>
+      <input type="text" class="edit-username field" name="username" value="<%= user.username %>">
+      <button type="submit" class="btn submit-btn">Salvar</button>
+    </form>
+    <button class="btn ep-cancel">Cancelar</button>
+  </div>
+</div>
+<% } %>

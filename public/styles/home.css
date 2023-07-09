@@ -1,0 +1,66 @@
+/* || MINI PROFILE || */
+
+.mini-profile {
+  align-items: center;
+}
+
+.mini-profile>div {
+  display: flex;
+  background-color: var(--MainColor);
+  border-radius: 1em;
+  flex-direction: column;
+  width: 100%;
+  gap: 1em;
+  padding: 1em;
+}
+
+.mp-pf-picture {
+  background-color: var(--Background);
+  border-radius: 1em;
+  width: 7.5em;
+  height: 7.5em;
+  margin: 0 auto;
+}
+
+.mp-user-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5em;
+}
+
+.mp-username {
+  font-size: 2.5rem;
+}
+
+.mp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.mp-actions a {
+  color: var(--OutterText);
+  text-decoration: none;
+  text-align: center;
+}
+
+/* || PROFILE || */
+
+.user-profile {
+  display: flex;
+  gap: 1em;
+}
+
+.pf-actions {
+  margin-top: 1em;
+}
+
+.danger-btn {
+  color: white;
+  background-color: var(--DangerText);
+}
+
+.delete-profile {
+  margin-top: 1.5em;
+}
