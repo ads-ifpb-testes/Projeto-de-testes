@@ -19,9 +19,7 @@ class Post {
   }
 
   async create() {
-    console.log(this.post);
-    this.post = await PostModel.create(this.body)
-    console.log(this.post);
+    this.post = await PostModel.create(this.body);
     return this.post;
   }
 

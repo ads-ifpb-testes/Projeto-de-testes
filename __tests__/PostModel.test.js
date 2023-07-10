@@ -22,9 +22,35 @@ describe("Funções de posts",() =>{
     };
 
     let post = new PostModel(testBody);
-
+    let postagem;
+    
     test('Criar um post', async () => {
-        let postagem = await post.create();
+        postagem = await post.create();
         expect(postagem.title).toBe(testBody.title);
+    });
+
+    test('Ler todos os posts', async () => {
+        let PostList = await PostModel.readAll();
+        let ListLen = PostList.length;
+        expect(ListLen >= 0).toBe(true);
+    });
+
+    test('Ler todos os posts de um usuário', async () => {
+        let PostList = await PostModel.readByUser(testBody.user);
+        let ListLen = PostList.length;
+        expect(ListLen >= 0).toBe(true);
+    });
+
+    test('Ler todos os posts sobre um tópico', async () => {
+        let word = testBody.title.split(" ")[0];
+        let PostList = await PostModel.readFilter(word);
+        let ListLen = PostList.length;
+        expect(ListLen >= 0).toBe(true);
+    });
+
+    test('Deletar um post', async () => {
+        const id = postagem._id.toString('hex');
+        let DelPost = await PostModel.delete(id);
+        expect(DelPost.title).toBe(testBody.title);
     });
 })
