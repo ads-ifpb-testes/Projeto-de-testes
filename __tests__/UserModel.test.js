@@ -5,9 +5,9 @@ const dbConn = 'Database connected';
 database.connect()
 .then(() => {
     console.log(dbConn);
-}).catch(err => console.log(err));;
+}).catch(err => console.log(err));
 
-describe("Funções de user", () =>{
+describe("Funções de user", () => {
     let testBody = {
         username: "arroz",
         email: "arroz@gmail.com",
@@ -18,7 +18,7 @@ describe("Funções de user", () =>{
       username: "WrongUser",
       email: "wrongemail.com",
       password: "123"
-  }; 
+    }; 
 
     let createdUser;
     let user = new UserModel(testBody);
