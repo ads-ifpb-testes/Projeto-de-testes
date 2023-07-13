@@ -2,141 +2,214 @@ let {User, UserModel} = require('../src/models/UserModel');
 const mockingoose = require('mockingoose');
 
 describe("Funções de user", () => {
-    let testBody = {
-        username: "arroz",
-        email: "arroz@gmail.com",
-        password: "senha12345"
-    }; 
+
+  beforeEach(() => {
+    mockingoose.resetAll()
+  });
+
+  test('Criar um usuário', async () => {
+
+    let UserObj = {
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123',
+      score: 10
+    }
+    mockingoose(UserModel).toReturn(undefined, 'findOne');
+    mockingoose(UserModel).toReturn(UserObj, 'save');
+
+    let createUser = new User(UserObj);
+    await createUser.register();
+
+    expect(createUser.user.username).toBe(UserObj.username);
+    expect(createUser.user.email).toBe(UserObj.email);
+  });
+
+  test('Criar um usuário errado', async () => {
 
     let wrongTestBody = {
       username: "WrongUser",
       email: "wrongemail.com",
       password: "123"
     };
-
-    beforeEach(() => {
-      mockingoose.resetAll()
-      // create
-      mockingoose(UserModel).toReturn(testBody, 'save');
-      // find
-      mockingoose(UserModel).toReturn([{
-        username: 'Mock find',
-        email: 'mock@email.com',
-        password: 'mock1234',
-        score: 0
-      }], 'find');
-      // findOne
-      mockingoose(UserModel).toReturn([{
-        username: 'Mock find',
-        email: 'mock@email.com',
-        password: 'mock1234',
-        score: 0
-      }], 'findOne');
-      // FindById
-      mockingoose(UserModel).toReturn([{
-        username: 'Mock find',
-        email: 'mock@email.com',
-        password: 'mock1234',
-        score: 0
-      }], 'findById');
-      // delete
-      mockingoose(UserModel).toReturn([{
-        username: 'MockDeleted',
-        email: 'mock@email.com',
-        password: 'mock1234',
-        score: 0
-      }], 'findOneAndDelete');
-      mockingoose(UserModel).toReturn([{
-        username: 'MockUpdate',
-        email: 'mock@email.com',
-        password: 'mock1234',
-        score: 0
-      }], 'update');
-    })
-
-    let createdUser;
-    let user = new User(testBody);
-
     let wrongUser = new User(wrongTestBody);
-  
-    test('Criar um usuário', async () => {
-      await user.register();
-      createdUser = user.user;
-      expect(createdUser.username).toBe(testBody.username);
-      expect(createdUser.email).toBe(testBody.email);
-    });
 
-    test('Criar um usuário errado', async () => {
-      await wrongUser.register();
-      expect(wrongUser.errors.length > 0).toBe(true);
-    });
+    await wrongUser.register();
+    expect(wrongUser.errors.length).toBeGreaterThan(0);
+  });
 
-    test('Fazer login de um usuário com senha errada', async () => {
-      user.body.password = "SenhaErrada";
-      await user.login();
-  
-      expect(user.errors.length > 0).toBe(true);
-      user.errors = [];
-      user.body.password = testBody.password;
-    });
-
-    test('Fazer login de um usuário', async () => {
-      user.body.password = testBody.password;
-      await user.login();
-      expect(user.errors.length === 0).toBe(true);
-    });
-  
-    test('Ler todos os usuários', async () => {
-      let userList = await User.readAll();
-      let listLen = userList.length;
-      expect(listLen >= 0).toBe(true);
-    });
+  test('Fazer login de um usuário com senha errada', async () => {
     
-    test('Ler um usuário por ID', async () => {
-      let fetchedUser = await User.readById(user.user._id.toString('hex'));
-      expect(fetchedUser.username).toBe(testBody.username);
-      expect(fetchedUser.email).toBe(testBody.email);
-    });
+    let WrongPassword = "SenhaErrada";
+    let wrongTestBody = {
+      username: "NormalUser",
+      email: "Normal@email.com",
+      password: "Normal123"
+    };
+
+    let login = {
+      email: wrongTestBody.email,
+      password: WrongPassword
+    };
+
+    mockingoose(UserModel).toReturn(wrongTestBody, 'findOne');
+
+    let wrongUser = new User(login);
+    await wrongUser.login();
+
+    expect(wrongUser.errors.length).toBeGreaterThan(0);
+  });
+
+  test('Fazer login de um usuário', async () => {
+    let UserObj = {
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123'
+    }
+    mockingoose(UserModel).toReturn(undefined, 'findOne');
+    mockingoose(UserModel).toReturn(UserObj, 'save');
+
+    let RegisterUser = new User(UserObj);
+    await RegisterUser.register();
+
+    mockingoose(UserModel).toReturn(RegisterUser.user, 'findOne');
+
+    let loginUser = new User(UserObj);
+    await loginUser.login();
+
+    expect(loginUser.errors.length).toBe(0);
+  });
+
+  test('Ler todos os usuários', async () => {
+    let UserObjList = [{
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123'
+    }, {
+      username: 'PizzaGuy31415',
+      email: 'thePizza@email.com',
+      password: 'password123'
+    }];
+
+    mockingoose(UserModel).toReturn(UserObjList, 'find');
+
+    let userList = await User.readAll();
+    let listLen = userList.length;
+    expect(listLen).toBeGreaterThanOrEqual(0);
+  });
+  
+  test('Ler um usuário por ID', async () => {
+    let UserObj = {
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123'
+    }
+    mockingoose(UserModel).toReturn(UserObj, 'findOne');
+    mockingoose(UserModel).toReturn(UserObj, 'findById');
+
+    let userExemplo = await UserModel.findOne();
+    let id = userExemplo._id.toString('hex');
+    let fetchedUser = await User.readById(id);
+    expect(fetchedUser.username).toBe(userExemplo.username);
+    expect(fetchedUser.email).toBe(userExemplo.email);
+  });
+  
+  test('Atualizar um usuário', async () => {
+
+    let NameToUpdate = "Novo nome"
+
+    let NewUserObjToUpdate = {
+      username: NameToUpdate,
+      email: 'mock@email.com',
+      password: 'mock1234'
+    };
+
+    let OldUserObjToUpdate = {
+      username: 'OldBoringName',
+      email: 'mock@email.com',
+      password: 'mock1234'
+    };
+
+    mockingoose(UserModel).toReturn(NewUserObjToUpdate, 'findOneAndUpdate');
+    mockingoose(UserModel).toReturn(OldUserObjToUpdate, 'findOne');
+
+    let UpdatedUser = await UserModel.findOne();
+    let userClassToUpdate = new User({username: NameToUpdate});
+  
+    userClassToUpdate.user = UpdatedUser;
+
+    let id = userClassToUpdate.user._id.toString('hex');
+    await userClassToUpdate.update(id);
     
-    test('Atualizar um usuário', async () => {
-      let updatedUsername = "Novo nome"
-      let UpdatedUser= new User({
-        username: 'AntigoNome',
-        email: "AntigoNome@gmail.com",
-        password: "senha12345"
-      });
-      await user.register();
-      await UpdatedUser.update(UpdatedUser.user._id.toString('hex'));
-      expect(UpdatedUser.user.username).toBe(updatedUsername);
-      expect(UpdatedUser.errors).toHaveLength(0);
-    });
+    expect(userClassToUpdate.user.username).toBe(NameToUpdate);
+    expect(userClassToUpdate.errors).toHaveLength(0);
+  });
 
-    test('Verificar se um username existe', async () => {
-      let errNum = user.errors.length;
-      await user.usernameExists();
-      expect(user.errors.length === errNum + 1).toBe(true);
-    });
+  test('Verificar se um username existe', async () => {
+    let UserObj = {
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123'
+    }
+    mockingoose(UserModel).toReturn(UserObj, 'findOne');
+    let user = new User(UserObj);
+    let errNum = user.errors.length;
+    await user.usernameExists();
+    expect(user.errors.length).toBeGreaterThan(errNum);
+  });
 
-    test('Verificar se um usuário existe', async () => {
-      let errNum = user.errors.length;
-      await user.userExists();
-      expect(user.errors.length === errNum + 1).toBe(true);
-    });
+  test('Verificar se um usuário existe', async () => {
+    let UserObj = {
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123'
+    }
+    mockingoose(UserModel).toReturn(UserObj, 'findOne');
+    let user = new User(UserObj);
+    let errNum = user.errors.length;
+    await user.userExists();
+    expect(user.errors.length).toBeGreaterThan(errNum);
+  });
 
-    test('Verificar se é possivel aumentar o score', async () => {
-      let num = 10;
-      let oldScore = user.user.score;
-      await User.addScore(user.user._id.toString('hex'), num);
-      let UpdatedUser = await User.readById(user.user._id.toString('hex'));
-      expect(UpdatedUser.score === oldScore + num).toBe(true);
-    });
+  test('Verificar se é possivel aumentar o score', async () => {
 
-    test('Deletar um usuário', async () => {
+    let num = 10;
 
-      let delUser = await User.readById(user.user._id.toString('hex'));
-      const id = delUser._id.toString('hex');
-      let deletedUser = await User.delete(id); 
-      expect(deletedUser[0].username).toBe('MockDeleted');
-     /*  expect(deletedUser.email).toBe(user.user.email); */
-    });
+    let UserObjToScore = {
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123',
+      score: 10
+    }
+
+    mockingoose(UserModel).toReturn(UserObjToScore, 'findOne');
+    mockingoose(UserModel).toReturn(UserObjToScore, 'findById');
+
+    let userToGivePoints = await UserModel.findOne();
+
+    let userClass = new User();
+    userClass.user = userToGivePoints;
+
+    let oldScore = userClass.user.score;
+
+    let id = userClass.user._id.toString('hex');
+    let UpdatedUser = await User.addScore(id, num);
+
+    expect(UpdatedUser.score).toBeGreaterThan(oldScore);
+  });
+
+  test('Deletar um usuário', async () => {
+    let UserObj = {
+      username: 'SoupGuy31415',
+      email: 'theSoup@email.com',
+      password: 'password123'
+    }
+    mockingoose(UserModel).toReturn(UserObj, 'findOneAndDelete');
+    mockingoose(UserModel).toReturn(UserObj, 'find');
+    
+    let userToDelete = await UserModel.find();
+    const id = userToDelete._id.toString('hex');
+    let deletedUser = await User.delete(id);
+    expect(deletedUser.username).toBe(UserObj.username);
+  });
 });

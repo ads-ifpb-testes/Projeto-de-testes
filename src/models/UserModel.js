@@ -118,7 +118,7 @@ class User {
     const user = await UserModel.findById(id);
     user.score += score;
     await UserModel.findByIdAndUpdate(id, user);
-    return;
+    return user;
   }
 }
 
