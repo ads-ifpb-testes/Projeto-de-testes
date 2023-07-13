@@ -1,5 +1,5 @@
 const path = require('path');
-const Comment = require(path.resolve(__dirname, '..', 'models', 'CommentModel'));
+const {Comment, CommentModel} = require(path.resolve(__dirname, '..', 'models', 'CommentModel'));
 const userController = require(path.resolve(__dirname, 'userController'));
 
 const create = async (req, res) => {

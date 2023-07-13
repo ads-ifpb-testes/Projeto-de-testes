@@ -2,9 +2,9 @@ require('dotenv').config();
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY;
-const User = require(path.resolve(__dirname, '..', 'models', 'UserModel'));
-const Post = require(path.resolve(__dirname, '..', 'models', 'PostModel'));
-const Comment = require(path.resolve(__dirname, '..', 'models', 'CommentModel'));
+const {User,UserModel} = require(path.resolve(__dirname, '..', 'models', 'UserModel'));
+const {Post, PostModel} = require(path.resolve(__dirname, '..', 'models', 'PostModel'));
+const {Comment, CommentModel} = require(path.resolve(__dirname, '..', 'models', 'CommentModel'));
 
 const create = async (req, res) => {
   try {

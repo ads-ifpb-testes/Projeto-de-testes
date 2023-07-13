@@ -1,5 +1,4 @@
 const path = require('path');
-const Post = require(path.resolve(__dirname, '..', 'models', 'PostModel'));
 const url = ['http://localhost:3000','https://projeto-forum.onrender.com'];
 
 const index = async (req, res) => {

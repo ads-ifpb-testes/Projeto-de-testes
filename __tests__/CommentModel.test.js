@@ -1,44 +1,61 @@
-let CommentModel = require('../src/models/CommentModel');
-let database = require('../src/database/mongo');
-
-const dbConn = 'Database connected';
-database.connect()
-.then(() => {
-    console.log(dbConn);
-}).catch(err => console.log(err));
+const mockingoose = require('mockingoose');
+let {Comment, CommentModel} = require('../src/models/CommentModel');
 
 describe("Funções de comentarios", ()=>{
+
     let testBody = {
-        user:"64a33248b30a754c88ede1cd",
-        post: "64a332ddb30a754c88ede202",
-        content: 'console.log("Hello Word");'
+      user:"64a33248b30a754c88ede1cd",
+      post: "64a332ddb30a754c88ede202",
+      content: 'console.log("Hello Word");'
     }
 
-    let comment = new CommentModel(testBody);
+    beforeEach(() => {
+      mockingoose.resetAll()
+      // create
+      mockingoose(CommentModel).toReturn(testBody, 'save');
+      // find
+      mockingoose(CommentModel).toReturn([{
+        user: '64a33248b30a754c88ede1cd',
+        post: 'Conteudo de mock find',
+        content: 'Sim, o mock funcionou'
+      }], 'find');
+      // delete
+      mockingoose(CommentModel).toReturn([{
+        user: '64a33248b30a754c88ede1cd',
+        post: 'Conteudo de mock delete',
+        content: 'Sim, o mock funcionou'
+      }], 'findOneAndDelete');
+    })
 
     test('Criar um comentário', async () => {
+  
+      let comment = new Comment(testBody);
+
       await comment.create();
+      /* console.log(comment.comment); */
       expect(comment.comment.content).toBe(testBody.content);
     });
   
     test('Ler todos os comentários de uma postagem', async () => {
-      await comment.create();
-      let commentList = await CommentModel.readByPost(testBody.post);
+
+      let commentList = await Comment.readByPost('64a332ddb30a754c88ede202');
+      // console.log(commentList);
       let listLen = commentList.length;
       expect(listLen >= 0).toBe(true);
     });
   
     test('Ler todos os comentários de um usuário', async () => {
-      await comment.create();
-      let commentList = await CommentModel.readByUser(testBody.user);
+      let commentList = await Comment.readByUser("64a33248b30a754c88ede1cd");
+      // console.log(commentList);
       let listLen = commentList.length;
       expect(listLen >= 0).toBe(true);
     });
   
     test('Deletar um comentário', async () => {
-      await comment.create();
-      const id = comment.comment._id.toString();
-      let deletedComment = await CommentModel.delete(id);
-      expect(deletedComment.content).toBe(testBody.content);
+      let commentToDelete = await Comment.readByUser("64a33248b30a754c88ede1cd");
+      const id = commentToDelete[0]._id.toString('hex');
+      let deletedComment = await Comment.delete(id);
+      // console.log(deletedComment);
+      expect(deletedComment[0].content).toBe('Sim, o mock funcionou');
     });
 })

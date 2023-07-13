@@ -1,5 +1,5 @@
 const path = require('path');
-const Post = require(path.resolve(__dirname, '..', 'models', 'PostModel'));
+const {Post, PostModel} = require(path.resolve(__dirname, '..', 'models', 'PostModel'));
 const userController = require(path.resolve(__dirname, 'userController'));
 const commentController = require(path.resolve(__dirname, 'commentController'));
 

@@ -40,4 +40,7 @@ class Comment {
 
 }
 
-module.exports = Comment;
+module.exports = {
+  Comment,
+  CommentModel
+};
